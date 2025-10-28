@@ -120,3 +120,5 @@ _ReSharper*/
 *.jfm
 *.pfx
 *.snk
+
+* CMakeLists.txt
