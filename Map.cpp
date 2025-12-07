@@ -101,3 +101,25 @@ void Map::createCard(int x, int y)
 		newlyCreatedCard->setExit(2, true); // This will happen rarely so just open RIGHT exit for simplicity
 	}
 }
+
+bool Map::checkIfCardExists(int x, int y)
+{
+	for (const auto& it : this->m_map) {
+		const auto& tempCoords = it->getCoords();
+		if (x == tempCoords.at(0) and y == tempCoords.at(1)) {
+			return true; 
+		}
+	}
+	return false;
+}
+
+Card* Map::getCard(int x, int y)
+{
+	for (const auto& it : this->m_map) {
+		const auto& tempCoords = it->getCoords();
+		if (x == tempCoords.at(0) and y == tempCoords.at(1)) {
+			return it;  // Card found at x y
+		}
+	}
+	return nullptr;  // No Card found at x y
+}
