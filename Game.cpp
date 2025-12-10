@@ -1,4 +1,4 @@
-#include "Game.h";
+#include "Game.h"
 
 Game::Game(Map* map, Renderer* renderer, InputReader* inputReader) {
     m_map = map;
@@ -7,9 +7,7 @@ Game::Game(Map* map, Renderer* renderer, InputReader* inputReader) {
 }
 
 Game::~Game() {
-    delete m_map;
-    delete m_renderer;
-    delete m_inputReader;
+    
 }
 
 void Game::mainLoop() {

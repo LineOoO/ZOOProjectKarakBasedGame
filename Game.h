@@ -1,7 +1,7 @@
-#pragma once;
-#include "Map.h";
-#include "Renderer.h";
-#include "InputReader.h";
+#pragma once
+#include "Map.h"
+#include "Renderer.h"
+#include "InputReader.h"
 
 
 
