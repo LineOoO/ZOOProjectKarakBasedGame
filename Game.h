@@ -9,6 +9,7 @@ class Game {
     Map* m_map;
     Renderer* m_renderer;
     InputReader* m_inputReader;
+    
 
     public:
     Game(Map* map, Renderer* renderer, InputReader* inputReader);
