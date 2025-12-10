@@ -6,10 +6,10 @@ InputCommand InputReader::readInput() {
     std::cin >> input;
     
     switch (input) {
-        case 'u': return InputCommand::Up;
-        case 'd': return InputCommand::Down;
-        case 'r': return InputCommand::Right;
-        case 'l': return InputCommand::Left;
+        case 'u': return InputCommand::UP;
+        case 'd': return InputCommand::DOWN;
+        case 'r': return InputCommand::RIGHT;
+        case 'l': return InputCommand::LEFT;
         default: return InputCommand::None;
     }
 }
