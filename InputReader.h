@@ -1,11 +1,11 @@
 #pragma once
 
-enum InputCommand {
+enum class InputCommand {
     None,
-    Up,
-    Down,
-    Left,
-    Right
+    LEFT,
+    UP,
+    RIGHT,
+    DOWN
 };
 
 class InputReader {
