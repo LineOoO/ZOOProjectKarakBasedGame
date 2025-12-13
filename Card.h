@@ -17,10 +17,14 @@ class Card
 	std::array<int, 2> m_coords{}; // Coordinates for where the card is positioned in the world (Map), used for checking if this position is occupied or if a new exit or entrance should be generated
 	
 	// Card content (enemies and items in this room)
-	std::vector<Enemy*> m_enemies;
-	std::vector<Item*> m_items;
+	//std::vector<Enemy*> m_enemies;
+	//std::vector<Item*> m_items;
+	Enemy* m_enemy;
+	Item* m_item;
 	bool m_isCleared; // True if all enemies are defeated
 	bool m_isVisited; // True if player has been here before
+
+
 
 public:
 	Card(int x, int y);
@@ -29,6 +33,13 @@ public:
 	void setCoords(int x, int y);
 	std::array<bool, 4> getExits(); // Returns exits, the order is LEFT, UP, RIGHT, DOWN
 	void setExit(int exit, bool value); // Set one of the exits status, the order is LEFT, UP, RIGHT, DOWN
+
+	void setEnemy(Enemy* enemy);
+	void setItem(Item* item);
+	bool hasEnemy() const;
+	bool hasItem() const;
+
+	~Card();
 
 };
 

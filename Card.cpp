@@ -1,6 +1,7 @@
 #include "Card.h"
 
 Card::Card(int x, int y)
+	:m_enemy(nullptr), m_item(nullptr), m_isCleared(false), m_isVisited(false)
 {
 	setCoords(x, y);
 }
@@ -24,4 +25,47 @@ std::array<bool, 4> Card::getExits()
 void Card::setExit(int exit, bool value)
 {
 	this->m_exits.at(exit) = value;
+}
+
+void Card::setEnemy(Enemy* enemy)
+{
+	this->m_enemy = enemy;
+}
+
+void Card::setItem(Item* item)
+{
+	this->m_item = item;
+}
+
+bool Card::hasEnemy() const
+{
+	if (this->m_enemy != nullptr)
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool Card::hasItem() const
+{
+	if (this->m_item != nullptr)
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+Card::~Card()
+{
+	if (this->m_enemy != nullptr)
+	{
+		delete this->m_enemy;
+	}
+	if (this->m_item != nullptr) {
+		delete this->m_item;
+	}
 }
