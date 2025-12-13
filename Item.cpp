@@ -79,3 +79,4 @@ char Item::getSymbol() const {
         case KEY: return 'K';
         default: return 'I';
     }
+}
