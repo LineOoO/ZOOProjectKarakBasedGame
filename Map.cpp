@@ -75,30 +75,28 @@ void Map::createCard(int x, int y)
 				}
 			}
 		}
-	}
-	// At this point our newly created Card has exits connected to all neighbors
-	// If an exit is closed, there is no neighbor in that direction
-	// The code below generates random exits for potential future room connections
-
-	auto newlyCreatedCard = m_map.back(); // save the pointer of our newly created card for easy access
-	auto exits = newlyCreatedCard->getExits(); // exits now holds copy of exit info for our newly created card
-	bool deadEndChecker = false; // logs if room has at least one exit after neigbor and random generation
-	for (size_t i = 0; i < newlyCreatedCard->getExits().size(); i++)
-	{
-		if (exits.at(i) == false) // if exit is closed, randomly try to open it
+		// At this point our newly created Card has exits connected to all neighbors
+		// If an exit is closed, there is no neighbor in that direction
+		// The code below generates random exits for potential future room connections
+		auto exits = newlyCreatedCard->getExits(); // exits now holds copy of exit info for our newly created card
+		bool deadEndChecker = false; // logs if room has at least one exit after neigbor and random generation
+		for (size_t i = 0; i < newlyCreatedCard->getExits().size(); i++)
 		{
-			bool randomResult = randBool();
-			deadEndChecker = deadEndChecker | randomResult;
-			newlyCreatedCard->setExit(i, randomResult);
+			if (exits.at(i) == false) // if exit is closed, randomly try to open it
+			{
+				bool randomResult = randBool();
+				deadEndChecker = deadEndChecker | randomResult;
+				newlyCreatedCard->setExit(i, randomResult);
+			}
+			else {
+				deadEndChecker = true;
+			}
 		}
-		else {
-			deadEndChecker = true;
-		}
-	}
 
-	if (!deadEndChecker) // This will trigger if there are 0 exits even after random generation
-	{
-		newlyCreatedCard->setExit(2, true); // This will happen rarely so just open RIGHT exit for simplicity
+		if (!deadEndChecker) // This will trigger if there are 0 exits even after random generation
+		{
+			newlyCreatedCard->setExit(2, true); // This will happen rarely so just open RIGHT exit for simplicity
+		}
 	}
 }
 
