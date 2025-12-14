@@ -37,6 +37,16 @@ void Card::setItem(Item* item)
 	this->m_item = item;
 }
 
+Item* Card::getItem()
+{
+	return this->m_item;
+}
+
+Enemy* Card::getEnemy()
+{
+	return this->m_enemy;
+}
+
 bool Card::hasEnemy() const
 {
 	if (this->m_enemy != nullptr)

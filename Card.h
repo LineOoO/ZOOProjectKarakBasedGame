@@ -36,6 +36,8 @@ public:
 
 	void setEnemy(Enemy* enemy);
 	void setItem(Item* item);
+	Item* getItem();
+	Enemy* getEnemy();
 	bool hasEnemy() const;
 	bool hasItem() const;
 
