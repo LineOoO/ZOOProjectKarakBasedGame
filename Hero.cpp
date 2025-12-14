@@ -69,6 +69,16 @@ int Hero::getDefense() const
 
 void Hero::takeDamage(int amount)
 {
+	// Calculate actual damage after defense
+	int actualDamage = amount - m_defense;
+	if (actualDamage < 0) {
+		actualDamage = 0;
+	}
+	
+	m_health -= actualDamage;
+	if (m_health < 0) {
+		m_health = 0;
+	}
 }
 
 void Hero::heal(int amount)
@@ -97,10 +107,24 @@ int Hero::getLevel() const
 
 void Hero::addXP(int amount)
 {
+	m_xp += amount;
+	
+	int xpNeeded = m_level * 100;
+	while (m_xp >= xpNeeded) {
+		m_xp -= xpNeeded;
+		levelUp();
+		xpNeeded = m_level * 100;
+	}
 }
 
 void Hero::levelUp()
 {
+	m_level++;
+	
+	m_maxHealth += 20;
+	m_health = m_maxHealth; 
+	m_attack += 5;
+	m_defense += 2;
 }
 
 void Hero::addItem(Item* item)
@@ -112,11 +136,47 @@ void Hero::addItem(Item* item)
 
 void Hero::removeItem(Item* item)
 {
-    
+	if (item == nullptr) {
+		return;
+	}
+	
+	for (auto it = m_inventory.begin(); it != m_inventory.end(); ++it) {
+		if (*it == item) {
+			m_inventory.erase(it);
+			break;
+		}
+	}
 }
 
 void Hero::useItem(int index)
 {
+	if (index < 0 || index >= static_cast<int>(m_inventory.size())) {
+		return;
+	}
+	
+	Item* item = m_inventory[index];
+	if (item == nullptr) {
+		return;
+	}
+	
+	switch (item->getType()) {
+		case HEAL_POTION:
+			heal(item->getValue());
+			break;
+		case STRENGTH_BOOST:
+			m_attack += item->getValue();
+			break;
+		case MANA_POTION:
+			break;
+		case TREASURE:
+			break;
+		case KEY:
+			break;
+	}
+	
+	item->use();
+	m_inventory.erase(m_inventory.begin() + index);
+	delete item;
 }
 
 std::vector<Item*>& Hero::getInventory()
