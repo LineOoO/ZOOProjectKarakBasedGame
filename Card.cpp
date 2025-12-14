@@ -69,6 +69,26 @@ bool Card::hasItem() const
 	}
 }
 
+void Card::setIsCleared(bool set)
+{
+	this->m_isCleared = set;
+}
+
+void Card::setIsVisited(bool set)
+{
+	this->m_isVisited = set;
+}
+
+bool Card::isVisited()
+{
+	return this->m_isVisited;
+}
+
+bool Card::isCleared()
+{
+	return this->m_isCleared;
+}
+
 Card::~Card()
 {
 	if (this->m_enemy != nullptr)

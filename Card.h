@@ -41,6 +41,11 @@ public:
 	bool hasEnemy() const;
 	bool hasItem() const;
 
+	void setIsCleared(bool set);
+	void setIsVisited(bool set);
+	bool isVisited();
+	bool isCleared();
+
 	~Card();
 
 };
