@@ -7,7 +7,7 @@ Game::Game(Map* map, Renderer* renderer, InputReader* inputReader) {
 }
 
 Game::~Game() {
-    
+
 }
 
 void Game::mainLoop() {
@@ -20,7 +20,7 @@ void Game::mainLoop() {
         //m_renderer->renderRoom();
         //m_inputReader->readInput();
         
-        
+        isAlive = false; // Placeholder to exit loopW
         
     }
 
