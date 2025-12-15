@@ -3,10 +3,8 @@
 #include "Card.h"
 #include "Renderer.h"
 
-void Renderer::renderIntroduction() {
-    std::cout << "Welcome to ZOO\n";
-    std::cout << "Your task as a hero is to navigate a maze, collect items and kill as many enemies as possible.\n";
-    std::cout << "Be quick!\n\n";
+std::string Renderer::renderIntroduction() {
+    return "Welcome to ZOO\nYour task as a hero is to navigate a maze, collect items and kill as many enemies as possible.\nBe quick!\n\n";
 }
 
 void Renderer::renderRoom(Card* card, bool hasEnemy, bool hasItem) {
@@ -42,10 +40,10 @@ void Renderer::renderRoom(Card* card, bool hasEnemy, bool hasItem) {
     }
 }
 
-void Renderer::renderEnd(bool hasWon) {
+std::string Renderer::renderEnd(bool hasWon) {
     if (hasWon) {
-        std::cout << "You won, congrats! Collect your reward (6 ECTS have just arrived to your student account)!\n";
+        return "You won, congrats! Collect your reward (6 ECTS have just arrived to your student account)!\n";
     } else {
-        std::cout << "Game Over! Try your luck again, learning is fun.\n";
+        return  "Game Over! Try your luck again, learning is fun.\n";
     }
 }

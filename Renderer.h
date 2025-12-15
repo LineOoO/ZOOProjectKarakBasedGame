@@ -3,7 +3,7 @@
 
 class Renderer {
     public:
-    void renderIntroduction();
+    std::string renderIntroduction();
     void renderRoom(Card* card, bool hasEnemy, bool hasItem);
-    void renderEnd(bool hasWon);
+    std::string renderEnd(bool hasWon);
 };

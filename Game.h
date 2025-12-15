@@ -18,6 +18,10 @@ class Game {
     void processHeroMovement();
     void heroCombat(Enemy* enemy);
     void heroDetails();
+    Item* generateItem();
+    Enemy* generateEnemy();
+    void handleCardSetup(Card* card);
+    void typeWriter(const std::string& text, int delayMs, bool instant);
 
     public:
     Game(Map* map, Renderer* renderer, InputReader* inputReader, Hero* hero);

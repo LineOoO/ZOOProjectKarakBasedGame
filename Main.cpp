@@ -12,8 +12,6 @@ int main() {
     Game* game = new Game(map, renderer, inputReader, hero);
     game->mainLoop();
 
-    std::cout << "Exiting game. Cleaning up resources..." << std::endl;
-
     
     delete map;
     delete renderer;

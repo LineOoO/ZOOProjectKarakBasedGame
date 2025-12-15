@@ -16,29 +16,41 @@ Game::~Game() {
 
 }
 
+void Game::typeWriter(const std::string& text, int delayMs = 30, bool instant = false) {
+    if (instant) {
+        std::cout << text;
+        return;
+    }
 
+    for (char c : text) {
+        std::cout << c << std::flush;
+        std::this_thread::sleep_for(std::chrono::milliseconds(delayMs));
+    }
+}
 
 void Game::processHeroMovement() {
     Card* currentCard = m_map->getCard(m_hero->getX(), m_hero->getY());
-    std::cout << "Move your hero! Use u, r, d, l keys to move UP, RIGHT, DOWN, LEFT respectively.\n";
-    std::cout << "Your move: ";
+    typeWriter("Move your hero! Use u, r, d, l keys to move UP, RIGHT, DOWN, LEFT respectively.\n");
+    typeWriter("Your move: ");
     InputCommand input = m_inputReader->readInput();
     std::array<bool, 4> cardExits =  currentCard->getExits();
     switch (input) {
         case InputCommand::UP: {
             if (cardExits[1] == 0) {
-                std::cout << "There is no exit at the top of the card!\nTry again.\n";
+                typeWriter("There is no exit at the top of the card!\nTry again.\n");
                 processHeroMovement();
                 return;
             }
             else {
                 if(m_map->checkIfCardExists(m_hero->getX(), m_hero->getY() + 1)) {
-                    std::cout << "Creating new Card at (" << m_hero->getX() + 1 << ";" << m_hero->getY() << ")\n";
+                    
                     m_hero->move(m_hero->getX(), m_hero->getY() + 1);
 
                 }
 
                 else {
+                    std::string creationMsg = "Creating new Card at (" + std::to_string(m_hero->getX()) + ";" + std::to_string(m_hero->getY() + 1) + ")\n";
+                    typeWriter(creationMsg);
                     m_map->createCard(m_hero->getX(), m_hero->getY() + 1);
                     m_hero->move(m_hero->getX(), m_hero->getY() + 1);
                 }
@@ -50,18 +62,20 @@ void Game::processHeroMovement() {
         };
         case InputCommand::DOWN: {
             if (cardExits[3] == 0) {
-                std::cout << "There is no exit at the bottom of the card!\nTry again.\n";
+                typeWriter("There is no exit at the bottom of the card!\nTry again.\n");
                 processHeroMovement();
                 return;
             }
             else {
-                if(m_map->checkIfCardExists(m_hero->getX(), m_hero->getY() - 1) && m_hero->getY() - 1 >= 0) {
-                    std::cout << "Creating new Card at (" << m_hero->getX() - 1 << ";" << m_hero->getY() << ")\n";
+                if(m_map->checkIfCardExists(m_hero->getX(), m_hero->getY() - 1)) {
+                    
                     m_hero->move(m_hero->getX(), m_hero->getY() - 1);
 
                 }
 
                 else {
+                    std::string creationMsg = "Creating new Card at (" + std::to_string(m_hero->getX()) + ";" + std::to_string(m_hero->getY() - 1) + ")\n";
+                    typeWriter(creationMsg);
                     m_map->createCard(m_hero->getX(), m_hero->getY() - 1);
                     m_hero->move(m_hero->getX(), m_hero->getY() - 1);
                 }
@@ -71,18 +85,19 @@ void Game::processHeroMovement() {
         };
         case InputCommand::RIGHT: {
             if (cardExits[2] == 0) {
-                std::cout << "There is no exit at the right side of the card!!\nTry again.\n";
+                typeWriter("There is no exit at the right side of the card!!\nTry again.\n");
                 processHeroMovement();
                 return;
             }
             else {
                 if(m_map->checkIfCardExists(m_hero->getX() + 1, m_hero->getY())) {
-                    std::cout << "Creating new Card at (" << m_hero->getX() - 1 << ";" << m_hero->getY() << ")\n";
                     m_hero->move(m_hero->getX() + 1, m_hero->getY());
 
                 }
 
                 else {
+                    std::string creationMsg = "Creating new Card at (" + std::to_string(m_hero->getX() + 1) + ";" + std::to_string(m_hero->getY()) + ")\n";
+                    typeWriter(creationMsg);
                     m_map->createCard(m_hero->getX() + 1, m_hero->getY());
                     m_hero->move(m_hero->getX() + 1, m_hero->getY());
                 }
@@ -92,18 +107,19 @@ void Game::processHeroMovement() {
         } ;
         case InputCommand::LEFT: {
             if (cardExits[0] == 0) {
-                std::cout << "There is no exit at the left side of the card!\nTry again.\n";
+                typeWriter("There is no exit at the left side of the card!\nTry again.\n");
                 processHeroMovement();
                 return;
             }
             else {
-                if(m_map->checkIfCardExists(m_hero->getX() - 1, m_hero->getY()) && m_hero->getX() - 1 >= 0) {
+                if(m_map->checkIfCardExists(m_hero->getX() - 1, m_hero->getY())) {
                     m_hero->move(m_hero->getX() - 1, m_hero->getY());
 
                 }
 
                 else {
-                    std::cout << "Creating new Card at (" << m_hero->getX() - 1 << ";" << m_hero->getY() << ")\n";
+                    std::string creationMsg = "Creating new Card at (" + std::to_string(m_hero->getX() - 1) + ";" + std::to_string(m_hero->getY()) + ")\n";
+                    typeWriter(creationMsg);
                     m_map->createCard(m_hero->getX() - 1, m_hero->getY());
                     m_hero->move(m_hero->getX() - 1, m_hero->getY());
                 }
@@ -120,42 +136,90 @@ void Game::processHeroMovement() {
 }
 
 void Game::heroCombat(Enemy* enemy) {
-    std::cout << "--- Combat encounter ---\n";
-    std::cout << "Encountered enemy: " << enemy->getName() << " (Health: " << enemy->getHealth() << ")\n";
+    typeWriter("--- Combat encounter ---\n");
+    std::string enemyInfo = "Encountered enemy: " + enemy->getName() + " (Health: " + std::to_string(enemy->getHealth()) + ")\n";
+    typeWriter(enemyInfo);
+    
     while (enemy->isAlive() || m_hero->isAlive())
     {
         enemy->takeDamage(m_hero->getAttack());
         m_hero->takeDamage(enemy->getAttack());
         if (!enemy->isAlive()) {
-            std::cout << "Enemy " << enemy->getName() << " defeated!\n";
+            std::string defeatedMsg = "Enemy " + enemy->getName() + " defeated!\n";
+            typeWriter(defeatedMsg); 
             m_hero->addXP(20); // Award XP for defeating enemy
-            std::cout << "Hero gained 20 XP!\n";
+            typeWriter("Hero gained 20 XP!\n");
             break;
         }
-        std::cout << "Hero Health: " << m_hero->getHealth() << " | Enemy Health: " << enemy->getHealth() << "\n";
+        if (!m_hero->isAlive()) {
+            std::string defeatedMsg = "Hero has been defeated by " + enemy->getName() + "!\n";
+            typeWriter(defeatedMsg);
+            break;
+        }
+        std::string statusMsg = "Hero Health: " + std::to_string(m_hero->getHealth()) + " | Enemy Health: " + std::to_string(enemy->getHealth()) + "\n";
+        typeWriter(statusMsg);
     }
-    std::cout << "------------------------\n" << std::endl;
+    typeWriter("------------------------\n");
     
 }
 
 void Game::heroDetails() {
         
-        std::cout << "--- Hero Stats ---\n";
-        std::cout << "Hero is at (" << m_hero->getX() << ";" << m_hero->getY() << ")\n";
-        std::cout << "Health: " << m_hero->getHealth() << "/" << m_hero->getMaxHealth() << "\n";
-        std::cout << "Attack: " << m_hero->getAttack() << "\n";
-        std::cout << "Defense: " << m_hero->getDefense() << "\n";
-        std::cout << "Level: " << m_hero->getLevel() << "\n";
-        std::cout << "Current xp: " << m_hero->getXP() << "\n";
-        std::cout << "------------------\n" << std::endl;
+        typeWriter("--- Hero Stats ---\n");
+        std::string coords = "Hero is at (" + std::to_string(m_hero->getX()) + ";" + std::to_string(m_hero->getY()) + ")\n";
+        typeWriter(coords);
+
+        std::string health = "Health: " + std::to_string(m_hero->getHealth()) + "/" + std::to_string(m_hero->getMaxHealth()) + "\n";
+        typeWriter(health);
+        
+        std::string attack = "Attack: " + std::to_string(m_hero->getAttack()) + "\n";
+        typeWriter(attack);
+
+        std::string defense = "Defense: " + std::to_string(m_hero->getDefense()) + "\n";
+        typeWriter(defense);
+
+        std::string level = "Level: " + std::to_string(m_hero->getLevel()) + "\n";
+        typeWriter(level);
+
+        std::string xp = "Current xp: " + std::to_string(m_hero->getXP()) + "\n";
+        typeWriter(xp);
+        typeWriter("------------------\n");
+}
+
+Item* Game::generateItem() {
+    int type = std::rand() % 5; // generate random number between 0 and 4
+    return new Item(static_cast<ItemType>(type)); // create new item of value random type
+}
+
+Enemy* Game::generateEnemy() {
+    int type = std::rand() % 4; // generate random number between 0 and 3
+    return new Enemy(static_cast<EnemyType>(type)); // create new enemy of value random type
+}
+
+void Game::handleCardSetup(Card* card) {
+    if (card->isVisited()) {
+        return;
+    }
+    card->setIsVisited(true);
+    bool cardHasEnemy = std::rand() % 3; // ~33% chance to have enemy
+    bool cardHasItem = std::rand() % 4; // 25% chance to have item
+
+    if (cardHasEnemy) {
+        Enemy* enemy = generateEnemy();
+        card->setEnemy(enemy);
+        
+    }
+
+    if (cardHasItem) {
+        Item* item = generateItem();
+        card->setItem(item);
+    }
 }
 
 
 void Game::mainLoop() {
     
-    bool cardHasEnemy = false;
-    bool cardHasItem = false;
-    m_renderer->renderIntroduction();
+    typeWriter(m_renderer->renderIntroduction());
     m_hero->setCoords(0, 0); // Start hero at (0,0)
 
     while(m_hero->isAlive()) {
@@ -163,30 +227,32 @@ void Game::mainLoop() {
         
         Card* card = m_map->getCard(m_hero->getX(), m_hero->getY());
 
-        cardHasEnemy = std::rand() % 3; // ~33% chance to have enemy
-        cardHasItem = std::rand() % 4; // 25% chance to have item
-
-        if (cardHasEnemy) {
-            Enemy* enemy = new Enemy(EnemyType::GOBLIN); // For simplicity, always a goblin
-            card->setEnemy(enemy);
-        }
-
-        if (cardHasItem) {
-            Item* item = new Item(ItemType::HEAL_POTION, 20); // For simplicity, always a heal potion
-            card->setItem(item);
-        }
+        handleCardSetup(card);
 
         heroDetails();
         
-        m_renderer->renderRoom(card, cardHasEnemy, cardHasItem);
+        m_renderer->renderRoom(card, card->hasEnemy(), card->hasItem());
 
+        if (!card->isCleared() && card->hasEnemy()) {
+            heroCombat(card->getEnemy());
 
-        heroCombat(card->getEnemy());
+            card->setIsCleared(true);
+        }
+
+        if (!m_hero->isAlive()) {
+            break;
+        }
         
         processHeroMovement();
         
-        
+        if (m_hero->getLevel() >= 5) {
+            m_renderer->renderEnd(true); // Hero has won
+            break;
+        }
         
     }
+
+    typeWriter(m_renderer->renderEnd(false)); // Hero has died, game over
+    typeWriter("Exiting game. Cleaning up resources...");
 
 }
