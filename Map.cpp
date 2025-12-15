@@ -1,9 +1,12 @@
 #include "Map.h"
 
 bool Map::randBool() {
-	static std::mt19937 gen(std::random_device{}());
-	static std::bernoulli_distribution dist(0.5); // 50% true, 50% false
-	return dist(gen);
+    // Use random_device to generate a good seed sequence
+    static std::random_device rd;
+    static std::seed_seq seed{ rd(), rd(), rd(), rd(), rd(), rd(), rd(), rd() };
+    static std::mt19937 gen(seed);                 // Mersenne Twister seeded once
+    static std::bernoulli_distribution dist(0.5);  // 50% true / false
+    return dist(gen);
 }
 
 Map::~Map()
