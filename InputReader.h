@@ -2,6 +2,7 @@
 
 enum class InputCommand {
     None,
+    QUIT,
     LEFT,
     UP,
     RIGHT,

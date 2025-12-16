@@ -12,6 +12,7 @@ InputCommand InputReader::readInput() {
         case 'd': return InputCommand::DOWN;
         case 'r': return InputCommand::RIGHT;
         case 'l': return InputCommand::LEFT;
+        case 'q': return InputCommand::QUIT;
         default: return InputCommand::None;
     }
 }
