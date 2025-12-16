@@ -17,6 +17,7 @@ int main() {
     delete renderer;
     delete inputReader;
     delete game;
+    delete hero;
     
     return 0;
 }

@@ -30,7 +30,7 @@ void Game::typeWriter(const std::string& text, int delayMs = 30, bool instant = 
 
 void Game::processHeroMovement() {
     Card* currentCard = m_map->getCard(m_hero->getX(), m_hero->getY());
-    typeWriter("Move your hero! Use u, r, d, l keys to move UP, RIGHT, DOWN, LEFT respectively.\n");
+    typeWriter("Move your hero! Use u, r, d, l keys to move UP, RIGHT, DOWN, LEFT respectively. Or type 'q' to quit the game.\n");
     typeWriter("Your move: ");
     InputCommand input = m_inputReader->readInput();
     std::array<bool, 4> cardExits =  currentCard->getExits();
@@ -128,8 +128,15 @@ void Game::processHeroMovement() {
 
         } ;
 
-        case InputCommand::None: {
+        case InputCommand::QUIT: {
+            typeWriter("Game has been quit.\n");
+            break;
+        }
 
+        case InputCommand::None: {
+            typeWriter("Invalid input! Try again.\n");
+            processHeroMovement();
+            return;
         }
         
     }
@@ -140,7 +147,7 @@ void Game::heroCombat(Enemy* enemy) {
     std::string enemyInfo = "Encountered enemy: " + enemy->getName() + " (Health: " + std::to_string(enemy->getHealth()) + ")\n";
     typeWriter(enemyInfo);
     
-    while (enemy->isAlive() || m_hero->isAlive())
+    while (enemy->isAlive() && m_hero->isAlive())
     {
         enemy->takeDamage(m_hero->getAttack());
         m_hero->takeDamage(enemy->getAttack());
@@ -218,11 +225,12 @@ void Game::handleCardSetup(Card* card) {
 
 
 void Game::mainLoop() {
-    
+    bool hasWon = false;
+    bool hadQuit = false;
     typeWriter(m_renderer->renderIntroduction());
     m_hero->setCoords(0, 0); // Start hero at (0,0)
 
-    while(m_hero->isAlive()) {
+    while(m_hero->isAlive() && !hadQuit) {
         
         
         Card* card = m_map->getCard(m_hero->getX(), m_hero->getY());
@@ -243,16 +251,29 @@ void Game::mainLoop() {
             break;
         }
         
+       
+        typeWriter("To quit the game type 'q' and to continue playing type 'c': ");
+        InputCommand input = m_inputReader->readInput();
+        if (input == InputCommand::QUIT) {
+            hadQuit = true;
+            typeWriter("Game has been quit.\n");
+            break;
+        }
+
+        typeWriter("Continuing the game...\n");
+        
+
         processHeroMovement();
         
         if (m_hero->getLevel() >= 5) {
-            m_renderer->renderEnd(true); // Hero has won
+            hasWon = true;
+            
             break;
         }
         
     }
 
-    typeWriter(m_renderer->renderEnd(false)); // Hero has died, game over
+    typeWriter(m_renderer->renderEnd(hasWon)); // Hero has died, game over
     typeWriter("Exiting game. Cleaning up resources...");
 
 }
