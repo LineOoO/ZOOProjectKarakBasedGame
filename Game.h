@@ -6,6 +6,8 @@
 #include "Hero.h"
 #include "Enemy.h"
 #include "Item.h"
+#include "ItemFactory.h"
+#include "EnemyFactory.h"
 
 
 
@@ -18,8 +20,6 @@ class Game {
     void processHeroMovement();
     void heroCombat(Enemy* enemy);
     void heroDetails();
-    Item* generateItem();
-    Enemy* generateEnemy();
     void handleCardSetup(Card* card);
     void typeWriter(const std::string& text, int delayMs, bool instant);
     bool tryMoveHero(int dx, int dy, int exitIndex, const std::string& direction);

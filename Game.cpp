@@ -129,16 +129,6 @@ void Game::heroDetails() {
         typeWriter("------------------\n");
 }
 
-Item* Game::generateItem() {
-    int type = std::rand() % 5; // generate random number between 0 and 4
-    return new Item(static_cast<ItemType>(type)); // create new item of value random type
-}
-
-Enemy* Game::generateEnemy() {
-    int type = std::rand() % 4; // generate random number between 0 and 3
-    return new Enemy(static_cast<EnemyType>(type)); // create new enemy of value random type
-}
-
 void Game::handleCardSetup(Card* card) {
     if (card->isVisited()) {
         return;
@@ -148,13 +138,13 @@ void Game::handleCardSetup(Card* card) {
     bool cardHasItem = std::rand() % 4; // 25% chance to have item
 
     if (cardHasEnemy) {
-        Enemy* enemy = generateEnemy();
+        Enemy* enemy = EnemyFactory::createRandom();
         card->setEnemy(enemy);
         
     }
 
     if (cardHasItem) {
-        Item* item = generateItem();
+        Item* item = ItemFactory::createRandom();
         card->setItem(item);
     }
 }
