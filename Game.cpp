@@ -2,8 +2,10 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
+#include <ctime>
 
 Game::Game(Map* map, Renderer* renderer, InputReader* inputReader, Hero* hero) {
+    std::srand(std::time(nullptr));
     m_map = map;
     m_renderer = renderer;
     m_inputReader = inputReader;
