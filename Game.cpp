@@ -28,117 +28,51 @@ void Game::typeWriter(const std::string& text, int delayMs = 30, bool instant = 
     }
 }
 
-void Game::processHeroMovement() {
+bool Game::tryMoveHero(int dx, int dy, int exitIndex, const std::string& direction) {
     Card* currentCard = m_map->getCard(m_hero->getX(), m_hero->getY());
+    std::array<bool, 4> cardExits = currentCard->getExits();
+    
+    if (!cardExits[exitIndex]) {
+        typeWriter("There is no exit at the " + direction + " of the card!\nTry again.\n", 30, false);
+        return false;
+    }
+    
+    int newX = m_hero->getX() + dx;
+    int newY = m_hero->getY() + dy;
+    
+    if (!m_map->checkIfCardExists(newX, newY)) {
+        typeWriter("Creating new Card at (" + std::to_string(newX) + ";" + std::to_string(newY) + ")\n", 30, false);
+        m_map->createCard(newX, newY);
+    }
+    
+    m_hero->move(newX, newY);
+    return true;
+}
+
+void Game::processHeroMovement() {
     typeWriter("Move your hero! Use u, r, d, l keys to move UP, RIGHT, DOWN, LEFT respectively. Or type 'q' to quit the game.\n");
     typeWriter("Your move: ");
     InputCommand input = m_inputReader->readInput();
-    std::array<bool, 4> cardExits =  currentCard->getExits();
     switch (input) {
-        case InputCommand::UP: {
-            if (cardExits[1] == 0) {
-                typeWriter("There is no exit at the top of the card!\nTry again.\n");
-                processHeroMovement();
-                return;
-            }
-            else {
-                if(m_map->checkIfCardExists(m_hero->getX(), m_hero->getY() + 1)) {
-                    
-                    m_hero->move(m_hero->getX(), m_hero->getY() + 1);
-
-                }
-
-                else {
-                    std::string creationMsg = "Creating new Card at (" + std::to_string(m_hero->getX()) + ";" + std::to_string(m_hero->getY() + 1) + ")\n";
-                    typeWriter(creationMsg);
-                    m_map->createCard(m_hero->getX(), m_hero->getY() + 1);
-                    m_hero->move(m_hero->getX(), m_hero->getY() + 1);
-                }
-                break;
-            }
-
-                
-            
-        };
-        case InputCommand::DOWN: {
-            if (cardExits[3] == 0) {
-                typeWriter("There is no exit at the bottom of the card!\nTry again.\n");
-                processHeroMovement();
-                return;
-            }
-            else {
-                if(m_map->checkIfCardExists(m_hero->getX(), m_hero->getY() - 1)) {
-                    
-                    m_hero->move(m_hero->getX(), m_hero->getY() - 1);
-
-                }
-
-                else {
-                    std::string creationMsg = "Creating new Card at (" + std::to_string(m_hero->getX()) + ";" + std::to_string(m_hero->getY() - 1) + ")\n";
-                    typeWriter(creationMsg);
-                    m_map->createCard(m_hero->getX(), m_hero->getY() - 1);
-                    m_hero->move(m_hero->getX(), m_hero->getY() - 1);
-                }
-                break;
-            }
-
-        };
-        case InputCommand::RIGHT: {
-            if (cardExits[2] == 0) {
-                typeWriter("There is no exit at the right side of the card!!\nTry again.\n");
-                processHeroMovement();
-                return;
-            }
-            else {
-                if(m_map->checkIfCardExists(m_hero->getX() + 1, m_hero->getY())) {
-                    m_hero->move(m_hero->getX() + 1, m_hero->getY());
-
-                }
-
-                else {
-                    std::string creationMsg = "Creating new Card at (" + std::to_string(m_hero->getX() + 1) + ";" + std::to_string(m_hero->getY()) + ")\n";
-                    typeWriter(creationMsg);
-                    m_map->createCard(m_hero->getX() + 1, m_hero->getY());
-                    m_hero->move(m_hero->getX() + 1, m_hero->getY());
-                }
-                break;
-            }
-
-        } ;
-        case InputCommand::LEFT: {
-            if (cardExits[0] == 0) {
-                typeWriter("There is no exit at the left side of the card!\nTry again.\n");
-                processHeroMovement();
-                return;
-            }
-            else {
-                if(m_map->checkIfCardExists(m_hero->getX() - 1, m_hero->getY())) {
-                    m_hero->move(m_hero->getX() - 1, m_hero->getY());
-
-                }
-
-                else {
-                    std::string creationMsg = "Creating new Card at (" + std::to_string(m_hero->getX() - 1) + ";" + std::to_string(m_hero->getY()) + ")\n";
-                    typeWriter(creationMsg);
-                    m_map->createCard(m_hero->getX() - 1, m_hero->getY());
-                    m_hero->move(m_hero->getX() - 1, m_hero->getY());
-                }
-                break;
-            }
-
-        } ;
-
-        case InputCommand::QUIT: {
+        case InputCommand::UP:
+            if (!tryMoveHero(0, 1, 1, "top")) { processHeroMovement(); return; }
+            break;
+        case InputCommand::DOWN:
+            if (!tryMoveHero(0, -1, 3, "bottom")) { processHeroMovement(); return; }
+            break;
+        case InputCommand::RIGHT:
+            if (!tryMoveHero(1, 0, 2, "right side")) { processHeroMovement(); return; }
+            break;
+        case InputCommand::LEFT:
+            if (!tryMoveHero(-1, 0, 0, "left side")) { processHeroMovement(); return; }
+            break;
+        case InputCommand::QUIT:
             typeWriter("Game has been quit.\n");
             break;
-        }
-
-        case InputCommand::None: {
+        case InputCommand::None:
             typeWriter("Invalid input! Try again.\n");
             processHeroMovement();
             return;
-        }
-        
     }
 }
 
