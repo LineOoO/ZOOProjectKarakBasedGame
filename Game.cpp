@@ -50,7 +50,7 @@ bool Game::tryMoveHero(int dx, int dy, int exitIndex, const std::string& directi
 }
 
 void Game::processHeroMovement() {
-    typeWriter("Move your hero! Use u, r, d, l keys to move UP, RIGHT, DOWN, LEFT respectively. Or type 'q' to quit the game.\n");
+    typeWriter("Move your hero! Use W, A, S, D keys to move. Or type 'q' to quit the game.\n");
     typeWriter("Your move: ");
     InputCommand input = m_inputReader->readInput();
     switch (input) {
