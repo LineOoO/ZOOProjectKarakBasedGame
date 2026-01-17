@@ -124,3 +124,8 @@ Card* Map::getCard(int x, int y)
 	}
 	return nullptr;  // No Card found at x y
 }
+
+const std::vector<Card*>& Map::getCards() const
+{
+	return m_map;
+}

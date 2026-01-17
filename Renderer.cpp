@@ -55,3 +55,81 @@ std::string Renderer::renderEnd(bool hasWon) {
         return  "Game Over! Try your luck again, learning is fun.\n";
     }
 }
+
+// vykresleni minimapy se vsemi prozkoumanymy mistnostmi
+void Renderer::renderMinimap(const std::vector<Card*>& cards, int heroX, int heroY) {
+    if (cards.empty()) {
+        return;
+    }
+
+    // najdi ohraniceni vsech karet (min/max souradnice)
+    int minX = heroX, maxX = heroX;
+    int minY = heroY, maxY = heroY;
+    
+    for (const auto& card : cards) {
+        auto coords = card->getCoords();
+        int x = coords[0];
+        int y = coords[1];
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+    }
+
+    // vypocet velikosti mrizky (kazda bunka je 3 znaky siroka, 1 znak vysoka)
+    // potrebujeme extra misto pro spojnice mezi mistnostmi
+    int gridWidth = (maxX - minX + 1) * 4 + 1;
+    int gridHeight = (maxY - minY + 1) * 2 + 1;
+
+    // vytvoreni prazdne mrizky vyplnene mezerami
+    std::vector<std::string> grid(gridHeight, std::string(gridWidth, ' '));
+
+    // umisteni kazde karty do mrizky
+    for (const auto& card : cards) {
+        auto coords = card->getCoords();
+        int cardX = coords[0];
+        int cardY = coords[1];
+        auto exits = card->getExits();
+
+        // prevod souradnic karty na pozici v mrizce
+        // pozn.: Y je obracene (vyssi Y = nize na obrazovce)
+        int gx = (cardX - minX) * 4 + 1;
+        int gy = (maxY - cardY) * 2 + 1;
+
+        // vykresli mistnost: [ ] nebo [@] pro hrdinu
+        if (cardX == heroX && cardY == heroY) {
+            grid[gy][gx] = '[';
+            grid[gy][gx + 1] = '@';
+            grid[gy][gx + 2] = ']';
+        } else {
+            grid[gy][gx] = '[';
+            grid[gy][gx + 1] = ' ';
+            grid[gy][gx + 2] = ']';
+        }
+
+        // vykresli spojnice podle vychodu
+        // LEVY vychod (index 0) - spojnice doleva
+        if (exits[0]) {
+            grid[gy][gx - 1] = '-';
+        }
+        // PRAVY vychod (index 2) - spojnice doprava
+        if (exits[2]) {
+            grid[gy][gx + 3] = '-';
+        }
+        // HORNI vychod (index 1) - spojnice nahoru (nizsi gy)
+        if (exits[1] && gy > 0) {
+            grid[gy - 1][gx + 1] = '|';
+        }
+        // DOLNI vychod (index 3) - spojnice dolu (vyssi gy)
+        if (exits[3] && gy + 1 < gridHeight) {
+            grid[gy + 1][gx + 1] = '|';
+        }
+    }
+
+    // vytiskni minimapu
+    std::cout << "--- Minimapa ---\n";
+    for (const auto& row : grid) {
+        std::cout << row << "\n";
+    }
+    std::cout << "----------------\n";
+}

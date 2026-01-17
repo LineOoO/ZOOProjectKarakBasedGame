@@ -166,6 +166,7 @@ void Game::mainLoop() {
         heroDetails();
         
         m_renderer->renderRoom(card, card->hasEnemy(), card->hasItem());
+        m_renderer->renderMinimap(m_map->getCards(), m_hero->getX(), m_hero->getY());
 
         if (!card->isCleared() && card->hasEnemy()) {
             heroCombat(card->getEnemy());
