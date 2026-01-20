@@ -134,8 +134,8 @@ void Game::handleCardSetup(Card* card) {
         return;
     }
     card->setIsVisited(true);
-    bool cardHasEnemy = std::rand() % 3; // ~33% chance to have enemy
-    bool cardHasItem = std::rand() % 4; // 25% chance to have item
+    bool cardHasEnemy = (std::rand() % 3) == 0; // ~33% chance to have enemy
+    bool cardHasItem = (std::rand() % 4) == 0; // 25% chance to have item
 
     if (cardHasEnemy) {
         Enemy* enemy = EnemyFactory::createRandom();

@@ -13,6 +13,7 @@ Map::~Map()
 {
 	for (auto& it : this->m_map) {
 		delete it;
+		it = nullptr;
 	}
 }
 

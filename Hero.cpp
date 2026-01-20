@@ -16,6 +16,7 @@ Hero::~Hero()
 {
 	for (Item* item : m_inventory) {
 		delete item;
+
 	}
 	m_inventory.clear();
 }
@@ -142,6 +143,7 @@ void Hero::removeItem(Item* item)
 	
 	for (auto it = m_inventory.begin(); it != m_inventory.end(); ++it) {
 		if (*it == item) {
+			delete *it;
 			m_inventory.erase(it);
 			break;
 		}

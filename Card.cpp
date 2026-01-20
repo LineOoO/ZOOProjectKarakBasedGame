@@ -94,8 +94,10 @@ Card::~Card()
 	if (this->m_enemy != nullptr)
 	{
 		delete this->m_enemy;
+		this->m_enemy = nullptr;
 	}
 	if (this->m_item != nullptr) {
 		delete this->m_item;
+		this->m_item = nullptr;
 	}
 }
