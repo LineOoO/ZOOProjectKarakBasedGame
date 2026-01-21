@@ -126,6 +126,13 @@ void Game::heroDetails() {
 
         std::string xp = "Current xp: " + std::to_string(m_hero->getXP()) + "\n";
         typeWriter(xp);
+
+        std::vector<Item*> inv = m_hero->getInventory();
+        typeWriter("Inventory: \n");
+        for(int i = 0; i<m_hero->getInventorySize(); i++) {
+            std::string str = inv.at(i)->getName() + "-" + std::to_string(i) + "\n";
+            typeWriter(str);
+        }
         typeWriter("------------------\n");
 }
 
@@ -164,6 +171,7 @@ void Game::mainLoop() {
         handleCardSetup(card);
 
         heroDetails();
+
         
         m_renderer->renderRoom(card, card->hasEnemy(), card->hasItem());
         m_renderer->renderMinimap(m_map->getCards(), m_hero->getX(), m_hero->getY());
@@ -178,7 +186,20 @@ void Game::mainLoop() {
             break;
         }
         
-       
+        
+        if(card->hasItem()) {
+            Item* item = card->getItem();
+            std::string itemStr = "Do you want to pick this item? Name:" + item->getName() + "\n";
+            typeWriter(itemStr);
+            typeWriter("y/n: ");
+            std::string itemDec;
+            std::cin >> itemDec;
+            if(itemDec=="y") {
+                m_hero->addItem(item);
+                card->setItem(nullptr);
+            }
+        }
+        
         typeWriter("To quit the game type 'q' and to continue playing type 'c': ");
         InputCommand input = m_inputReader->readInput();
         if (input == InputCommand::QUIT) {
