@@ -211,7 +211,7 @@ void Game::mainLoop() {
             }
         }
         
-        typeWriter("To quit the game type 'q' and to continue playing type 'c': ");
+        typeWriter("To quit the game type 'q' and to continue type anything else: ");
         InputCommand input = m_inputReader->readInput();
         if (input == InputCommand::QUIT) {
             hadQuit = true;
