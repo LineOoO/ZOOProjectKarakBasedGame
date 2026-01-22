@@ -21,17 +21,17 @@ Hero::~Hero()
 	m_inventory.clear();
 }
 
-std::array<int, 2> Hero::getCoords() const
+std::array<int, 2> Hero::getCoords()
 {
 	return m_coords;
 }
 
-int Hero::getX() const
+int Hero::getX()
 {
 	return m_coords[0];
 }
 
-int Hero::getY() const
+int Hero::getY()
 {
 	return m_coords[1];
 }
@@ -48,22 +48,22 @@ void Hero::move(int x, int y)
 }
 
 // Combat stats
-int Hero::getHealth() const
+int Hero::getHealth()
 {
 	return m_health;
 }
 
-int Hero::getMaxHealth() const
+int Hero::getMaxHealth()
 {
 	return m_maxHealth;
 }
 
-int Hero::getAttack() const
+int Hero::getAttack()
 {
 	return m_attack;
 }
 
-int Hero::getDefense() const
+int Hero::getDefense()
 {
 	return m_defense;
 }
@@ -90,18 +90,18 @@ void Hero::heal(int amount)
 	}
 }
 
-bool Hero::isAlive() const
+bool Hero::isAlive()
 {
 	return m_health > 0;
 }
 
 
-int Hero::getXP() const
+int Hero::getXP()
 {
 	return m_xp;
 }
 
-int Hero::getLevel() const
+int Hero::getLevel()
 {
 	return m_level;
 }
@@ -194,7 +194,7 @@ Item* Hero::getItem(int index)
 	return nullptr;
 }
 
-int Hero::getInventorySize() const
+int Hero::getInventorySize()
 {
 	return static_cast<int>(m_inventory.size());
 }

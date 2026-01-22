@@ -3,7 +3,6 @@
 #include "Item.h"
 
 Item::Item(ItemType type) : m_type(type), m_isUsed(false) {
-    // Set default values based on item type
     switch(type) {
         case HEAL_POTION:
             m_name = "Health Potion";
@@ -53,24 +52,23 @@ void Item::use() {
     m_isUsed = true;
 }
 
-ItemType Item::getType() const {
+ItemType Item::getType() {
     return m_type;
 }
 
-std::string Item::getName() const {
+std::string Item::getName() {
     return m_name;
 }
 
-int Item::getValue() const {
+int Item::getValue() {
     return m_value;
 }
 
-bool Item::isUsed() const {
+bool Item::isUsed() {
     return m_isUsed;
 }
 
-char Item::getSymbol() const {
-    // Return symbol for rendering based on item type
+char Item::getSymbol() {
     switch(m_type) {
         case HEAL_POTION: return 'H';
         case MANA_POTION: return 'M';

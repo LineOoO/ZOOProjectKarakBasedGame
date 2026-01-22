@@ -20,22 +20,22 @@ public:
 	Hero(int x, int y);
 	~Hero();
 	
-	std::array<int, 2> getCoords() const;
-	int getX() const;
-	int getY() const;
+	std::array<int, 2> getCoords();
+	int getX();
+	int getY();
 	void setCoords(int x, int y);
 	void move(int x, int y);
 	
-	int getHealth() const;
-	int getMaxHealth() const;
-	int getAttack() const;
-	int getDefense() const;
+	int getHealth();
+	int getMaxHealth();
+	int getAttack();
+	int getDefense();
 	void takeDamage(int amount);
 	void heal(int amount);
-	bool isAlive() const;
+	bool isAlive();
 	
-	int getXP() const;
-	int getLevel() const;
+	int getXP();
+	int getLevel();
 	void addXP(int amount);
 	void levelUp();
 	
@@ -45,5 +45,5 @@ public:
 	void useItem(int index);
 	std::vector<Item*>& getInventory();
 	Item* getItem(int index);
-	int getInventorySize() const;
+	int getInventorySize();
 };

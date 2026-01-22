@@ -18,14 +18,14 @@ class Enemy {
     bool m_isAlive;
  public:
     Enemy(EnemyType type);
-    Enemy(int health, int attack, EnemyType type, const std::string& name);
+    Enemy(int health, int attack, EnemyType type, std::string& name);
     
     void takeDamage(int amount);
-    bool isAlive() const;
-    int getHealth() const;
-    int getMaxHealth() const;
-    int getAttack() const;
-    EnemyType getType() const;
-    std::string getName() const;
-    char getSymbol() const; // Symbol for rendering on the map
+    bool isAlive();
+    int getHealth();
+    int getMaxHealth();
+    int getAttack();
+    EnemyType getType();
+    std::string getName();
+    char getSymbol();
 };

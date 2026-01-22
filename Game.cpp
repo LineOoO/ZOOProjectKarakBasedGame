@@ -149,8 +149,8 @@ void Game::handleCardSetup(Card* card) {
         return;
     }
     card->setIsVisited(true);
-    bool cardHasEnemy = (std::rand() % 3) == 0; // ~33% chance to have enemy
-    bool cardHasItem = (std::rand() % 4) == 0; // 25% chance to have item
+    bool cardHasEnemy = (std::rand() % 2) == 0;
+    bool cardHasItem = (std::rand() % 3) == 0;
 
     if (cardHasEnemy) {
         Enemy* enemy = EnemyFactory::createRandom();
@@ -169,7 +169,7 @@ void Game::mainLoop() {
     bool hasWon = false;
     bool hadQuit = false;
     typeWriter(m_renderer->renderIntroduction());
-    m_hero->setCoords(0, 0); // Start hero at (0,0)
+    m_hero->setCoords(0, 0);
 
     while(m_hero->isAlive() && !hadQuit) {
         
@@ -206,7 +206,6 @@ void Game::mainLoop() {
                 m_hero->addItem(item);
                 card->setItem(nullptr);
             } else {
-                // Oprava memory leak - pokud hráč item nevezme, musíme ho smazat
                 delete item;
                 card->setItem(nullptr);
             }

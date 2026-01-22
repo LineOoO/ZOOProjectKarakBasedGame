@@ -3,7 +3,6 @@
 #include "Enemy.h"
 
 Enemy::Enemy(EnemyType type) : m_type(type), m_isAlive(true) {
-    // Set default stats based on enemy type
     switch(type) {
         case GOBLIN:
             m_maxHealth = 30;
@@ -29,7 +28,7 @@ Enemy::Enemy(EnemyType type) : m_type(type), m_isAlive(true) {
     m_health = m_maxHealth;
 }
 
-Enemy::Enemy(int health, int attack, EnemyType type, const std::string& name) 
+Enemy::Enemy(int health, int attack, EnemyType type, std::string& name) 
     : m_maxHealth(health), m_health(health), m_attack(attack), m_type(type), m_name(name), m_isAlive(true) {
 }
 
@@ -41,31 +40,31 @@ m_health -= amount;
     }
 }
 
-bool Enemy::isAlive() const {
+bool Enemy::isAlive() {
     return m_isAlive;
 }
 
-int Enemy::getHealth() const {
+int Enemy::getHealth() {
     return m_health;
 }
 
-int Enemy::getMaxHealth() const {
+int Enemy::getMaxHealth() {
     return m_maxHealth;
 }
 
-int Enemy::getAttack() const {
+int Enemy::getAttack() {
     return m_attack;
 }
 
-EnemyType Enemy::getType() const {
+EnemyType Enemy::getType() {
     return m_type;
 }
 
-std::string Enemy::getName() const {
+std::string Enemy::getName() {
     return m_name;
 }
 
-char Enemy::getSymbol() const {
+char Enemy::getSymbol() {
     // Return symbol for rendering based on enemy type
     switch(m_type) {
         case GOBLIN: return 'G';
