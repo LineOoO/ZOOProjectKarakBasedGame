@@ -13,6 +13,8 @@ InputCommand InputReader::readInput() {
         case 'd': return InputCommand::RIGHT;
         case 'a': return InputCommand::LEFT;
         case 'q': return InputCommand::QUIT;
+        case 'i': return InputCommand::INVENTORY;
+        case 'h': return InputCommand::DETAILS;
         case 'c': return InputCommand::None; // continue game
         default: return InputCommand::None;
     }

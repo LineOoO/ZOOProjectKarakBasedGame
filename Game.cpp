@@ -52,7 +52,7 @@ bool Game::tryMoveHero(int dx, int dy, int exitIndex, const std::string& directi
 }
 
 void Game::processHeroMovement() {
-    typeWriter("Move your hero! Use W, A, S, D keys to move. Or type 'q' to quit the game.\n");
+    typeWriter("Move your hero! Use W, A, S, D keys to move. Press 'i' for inventory, 'h' for hero details. Or type 'q' to quit the game.\n");
     typeWriter("Your move: ");
     InputCommand input = m_inputReader->readInput();
     switch (input) {
@@ -68,6 +68,14 @@ void Game::processHeroMovement() {
         case InputCommand::LEFT:
             if (!tryMoveHero(-1, 0, 0, "left side")) { processHeroMovement(); return; }
             break;
+        case InputCommand::INVENTORY:
+            openInventory();
+            processHeroMovement();
+            return;
+        case InputCommand::DETAILS:
+            heroDetails();
+            processHeroMovement();
+            return;
         case InputCommand::QUIT:
             typeWriter("Game has been quit.\n");
             break;
@@ -197,6 +205,10 @@ void Game::mainLoop() {
             if(itemDec=="y") {
                 m_hero->addItem(item);
                 card->setItem(nullptr);
+            } else {
+                // Oprava memory leak - pokud hráč item nevezme, musíme ho smazat
+                delete item;
+                card->setItem(nullptr);
             }
         }
         
@@ -224,4 +236,67 @@ void Game::mainLoop() {
     typeWriter(m_renderer->renderEnd(hasWon)); // Hero has died, game over
     typeWriter("Exiting game. Cleaning up resources...");
 
+}
+
+void Game::openInventory() {
+    typeWriter("\n--- INVENTORY ---\n");
+    
+    if (m_hero->getInventorySize() == 0) {
+        typeWriter("Your inventory is empty.\n");
+        typeWriter("-----------------\n");
+        return;
+    }
+    
+    std::vector<Item*>& inventory = m_hero->getInventory();
+    for (int i = 0; i < m_hero->getInventorySize(); i++) {
+        Item* item = inventory[i];
+        std::string itemInfo = std::to_string(i) + ". " + item->getName();
+        if (item->getType() == HEAL_POTION || item->getType() == STRENGTH_BOOST) {
+            itemInfo += " (Value: " + std::to_string(item->getValue()) + ")";
+        }
+        itemInfo += "\n";
+        typeWriter(itemInfo);
+    }
+    
+    typeWriter("-----------------\n");
+    typeWriter("Enter item number to use (or 'c' to cancel): ");
+    
+    std::string input;
+    std::cin >> input;
+    
+    if (input == "c") {
+        typeWriter("Closing inventory.\n");
+        return;
+    }
+    
+    try {
+        int itemIndex = std::stoi(input);
+        
+        if (itemIndex < 0 || itemIndex >= m_hero->getInventorySize()) {
+            typeWriter("Invalid item number!\n");
+            return;
+        }
+        
+        Item* item = m_hero->getItem(itemIndex);
+        if (item == nullptr) {
+            typeWriter("Invalid item!\n");
+            return;
+        }
+        
+        std::string confirmMsg = "Do you want to use: " + item->getName() + "? (y/n): ";
+        typeWriter(confirmMsg);
+        
+        std::string confirm;
+        std::cin >> confirm;
+        
+        if (confirm == "y") {
+            m_hero->useItem(itemIndex);
+            typeWriter("Item used successfully!\n");
+        } else {
+            typeWriter("Cancelled.\n");
+        }
+        
+    } catch (const std::exception& e) {
+        typeWriter("Invalid input!\n");
+    }
 }

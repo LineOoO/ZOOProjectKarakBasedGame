@@ -23,6 +23,7 @@ class Game {
     void handleCardSetup(Card* card);
     void typeWriter(const std::string& text, int delayMs, bool instant);
     bool tryMoveHero(int dx, int dy, int exitIndex, const std::string& direction);
+    void openInventory();
 
     public:
     Game(Map* map, Renderer* renderer, InputReader* inputReader, Hero* hero);

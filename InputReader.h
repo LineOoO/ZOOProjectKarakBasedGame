@@ -6,7 +6,9 @@ enum class InputCommand {
     LEFT,
     UP,
     RIGHT,
-    DOWN
+    DOWN,
+    INVENTORY,
+    DETAILS
 };
 
 class InputReader {

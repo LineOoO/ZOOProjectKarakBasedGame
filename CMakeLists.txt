@@ -11,9 +11,19 @@ add_executable(ZOOProjectKarakBasedGame
         Map.h
         Log.h
         Hero.cpp
+        Hero.h
         Item.cpp
+        Item.h
+        ItemFactory.cpp
+        ItemFactory.h
         Enemy.cpp
+        Enemy.h
+        EnemyFactory.cpp
+        EnemyFactory.h
         Game.cpp
+        Game.h
         InputReader.cpp
+        InputReader.h
         Renderer.cpp
+        Renderer.h
 )
